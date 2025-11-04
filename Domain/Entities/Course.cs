@@ -1,10 +1,8 @@
 ﻿namespace Domain.Entities
 {
-    public class Course
+    public class Course : BaseEntity
     {
-        public int Id { get; set; }
-        public string Title { get; set; } = string.Empty;
+        public required string Title { get; set; }
         public string Description { get; set; } = string.Empty;
-        public int DurationInHours { get; set; }
     }
 }

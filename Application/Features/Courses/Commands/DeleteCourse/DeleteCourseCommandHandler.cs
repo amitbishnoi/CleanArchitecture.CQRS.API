@@ -6,22 +6,22 @@ namespace Application.Features.Courses.Commands.DeleteCourse
 {
     public class DeleteCourseCommandHandler : IRequestHandler<DeleteCourseCommand, Unit>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteCourseCommandHandler(IApplicationDbContext context)
+        public DeleteCourseCommandHandler(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.Courses.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var entity = await _unitOfWork.Courses.GetByIdAsync(request.Id);    
 
             if (entity == null)
                 throw new KeyNotFoundException($"Course with ID {request.Id} not found.");
 
-            _context.Courses.Remove(entity);
-            await _context.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.Courses.DeleteAsync(entity);
+            await _unitOfWork.SaveAsync();
 
             return Unit.Value;
         }

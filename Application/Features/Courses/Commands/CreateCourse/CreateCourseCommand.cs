@@ -6,6 +6,5 @@ namespace Application.Features.Courses.Commands.CreateCourse
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public int DurationInHours { get; set; }
     }
 }

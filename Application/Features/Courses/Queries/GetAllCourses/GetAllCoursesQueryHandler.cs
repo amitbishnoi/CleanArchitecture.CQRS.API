@@ -6,26 +6,23 @@ namespace Application.Features.Courses.Queries.GetAllCourses
 {
     public class GetAllCoursesQueryHandler : IRequestHandler<GetAllCoursesQuery, List<CourseDto>>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetAllCoursesQueryHandler(IApplicationDbContext context)
+        public GetAllCoursesQueryHandler(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<List<CourseDto>> Handle(GetAllCoursesQuery request, CancellationToken cancellationToken)
         {
-            var courses = await _context.Courses
-                .Select(c => new CourseDto
-                {
-                    Id = c.Id,
-                    Title = c.Title,
-                    Description = c.Description,
-                    DurationInHours = c.DurationInHours
-                })
-                .ToListAsync(cancellationToken);
+            var courses = await _unitOfWork.Courses.GetAllAsync();
 
-            return courses;
+            return courses.Select(c => new CourseDto
+            {
+                Id = c.Id,
+                Title = c.Title,
+                Description = c.Description,
+            }).ToList();
         }
     }
 }

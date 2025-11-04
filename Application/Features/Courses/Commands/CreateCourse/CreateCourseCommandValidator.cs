@@ -13,8 +13,6 @@ namespace Application.Features.Courses.Commands.CreateCourse
             RuleFor(x => x.Description)
                 .NotEmpty().WithMessage("Description is required.");
 
-            RuleFor(x => x.DurationInHours)
-                .GreaterThan(0).WithMessage("Duration must be greater than zero.");
         }
     }
 }

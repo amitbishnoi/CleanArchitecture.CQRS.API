@@ -6,11 +6,11 @@ namespace Application.Features.Courses.Commands.CreateCourse
 {
     public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, int>
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateCourseCommandHandler(IApplicationDbContext context)
+        public CreateCourseCommandHandler(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<int> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
@@ -19,12 +19,11 @@ namespace Application.Features.Courses.Commands.CreateCourse
             {
                 Title = request.Title,
                 Description = request.Description,
-                DurationInHours = request.DurationInHours
             };
 
-            _context.Courses.Add(entity);
-            await _context.SaveChangesAsync(cancellationToken);
-
+            await _unitOfWork.Courses.AddAsync(entity);
+            await _unitOfWork.SaveAsync();
+                
             return entity.Id;
         }
     }

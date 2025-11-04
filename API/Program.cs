@@ -1,6 +1,4 @@
 using Application;
-using Application.Interfaces;
-using FluentValidation;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-
-// MediatR + FluentValidation
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly));
-builder.Services.AddValidatorsFromAssembly(typeof(Application.AssemblyReference).Assembly);
+builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationServices();
 
 // Controllers + Swagger
 builder.Services.AddControllers();
