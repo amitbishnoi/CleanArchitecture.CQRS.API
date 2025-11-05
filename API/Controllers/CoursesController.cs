@@ -4,10 +4,12 @@ using Application.Features.Courses.Commands.UpdateCourse;
 using Application.Features.Courses.Queries.GetAllCourses;
 using Application.Features.Courses.Queries.GetCourseById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CoursesController : ControllerBase
@@ -26,7 +28,6 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        // GET: api/users/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCourseById(int id)
         {

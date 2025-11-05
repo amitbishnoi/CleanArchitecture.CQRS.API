@@ -21,6 +21,8 @@ namespace Application.Features.Users.Commands.UpdateUser
 
             user.Name = request.Name.Trim();
             user.Email = request.Email.Trim();
+            user.PasswordHash = request.Password.Trim();
+            user.Role = request.Password.Trim();
 
             await _unitOfWork.Users.UpdateAsync(user);
             await _unitOfWork.SaveAsync();

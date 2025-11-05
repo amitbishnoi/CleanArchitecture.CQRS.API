@@ -13,6 +13,14 @@ namespace Application.Features.Users.Commands.CreateUser
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required.")
                 .EmailAddress().WithMessage("Email must be a valid email address.");
+
+            RuleFor(x => x.Password)
+                .NotEmpty().WithMessage("Password is required.")
+                .MaximumLength(100).WithMessage("Password must not exceed 100 characters.");
+
+            RuleFor(x => x.Role)
+                .NotEmpty().WithMessage("Role is required.")
+                .MaximumLength(100).WithMessage("Role must not exceed 100 characters.");
         }
     }
 }

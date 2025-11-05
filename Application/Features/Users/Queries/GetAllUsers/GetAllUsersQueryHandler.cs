@@ -23,6 +23,8 @@ namespace Application.Features.Users.Queries.GetAllUsers
                 Id = u.Id,
                 Name = u.Name,
                 Email = u.Email,
+                Password = u.PasswordHash,
+                Role = u.Role
             }).ToList();
         }
     }

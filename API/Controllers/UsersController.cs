@@ -4,12 +4,14 @@ using Application.Features.Users.Commands.UpdateUser;
 using Application.Features.Users.Queries.GetAllUsers;
 using Application.Features.Users.Queries.GetUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -26,7 +28,6 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        // GET: api/users/{id}
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
@@ -38,7 +39,7 @@ namespace API.Controllers
             return Ok(user);
         }
 
-        // POST: api/users
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
         {
@@ -46,7 +47,6 @@ namespace API.Controllers
             return CreatedAtAction(nameof(GetUserById), new { id = userId }, new { Id = userId });
         }
 
-        // PUT: api/users/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserCommand command)
         {
@@ -60,7 +60,6 @@ namespace API.Controllers
             return Ok(new { Message = "User updated successfully." });
         }
 
-        // DELETE: api/users/{id}
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {

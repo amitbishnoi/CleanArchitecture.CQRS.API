@@ -1,5 +1,8 @@
-﻿using Application.Interfaces;
+﻿using Application.Features.Authentication.Interfaces;
+using Application.Interfaces;
+using Application.Interfaces.SecurityInterface;
 using Infrastructure.Persistence.Repositories;
+using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +22,11 @@ namespace Infrastructure.Persistence
 
             services.AddScoped<IApplicationDbContext>(provider =>
                 provider.GetRequiredService<ApplicationDbContext>());
+
             // Register Repositories + UoW
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
