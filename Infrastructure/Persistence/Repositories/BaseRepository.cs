@@ -9,10 +9,17 @@ namespace Infrastructure.Persistence.Repositories
     public class BaseRepository<T> : IAsyncRepository<T> where T : BaseEntity
     {
         protected readonly ApplicationDbContext _context;
+        protected readonly DbSet<T> _dbSet;
 
         public BaseRepository(ApplicationDbContext context)
         {
             _context = context;
+            _dbSet = _context.Set<T>();
+        }
+
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await _dbSet.FirstOrDefaultAsync(predicate);
         }
 
         public async Task<T?> GetByIdAsync(int id)
