@@ -1,4 +1,5 @@
-﻿using Application.Features.Courses.Commands.CreateCourse;
+﻿using Application.Common.Models;
+using Application.Features.Courses.Commands.CreateCourse;
 using Application.Features.Courses.Commands.DeleteCourse;
 using Application.Features.Courses.Commands.UpdateCourse;
 using Application.Features.Courses.Queries.GetAllCourses;
@@ -27,6 +28,24 @@ namespace API.Controllers
             var result = await _mediator.Send(new GetAllCoursesQuery());
             return Ok(result);
         }
+
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPagedCourses([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? searchTerm = null)
+        {
+            var query = new GetAllCoursesQuery
+            {
+                Pagination = new PaginationParams
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    SearchTerm = searchTerm
+                }
+            };
+
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCourseById(int id)

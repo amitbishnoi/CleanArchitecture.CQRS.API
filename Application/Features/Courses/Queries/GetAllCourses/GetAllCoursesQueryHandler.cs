@@ -1,21 +1,24 @@
-﻿using Application.Features.Courses.Dtos;
+﻿using Application.Common.Models;
+using Application.Features.Courses.Dtos;
 using Application.Interfaces;
+using AutoMapper;
+using Domain.Entities;
 using MediatR;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Features.Courses.Queries.GetAllCourses
 {
-    public class GetAllCoursesQueryHandler(IUnitOfWork _unitOfWork) : IRequestHandler<GetAllCoursesQuery, List<CourseDto>>
+    public class GetAllCoursesQueryHandler(IUnitOfWork _unitOfWork, IMapper _mapper) : IRequestHandler<GetAllCoursesQuery, IReadOnlyList<CourseDto>>
     {
-        public async Task<List<CourseDto>> Handle(GetAllCoursesQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<CourseDto>> Handle(GetAllCoursesQuery request, CancellationToken cancellationToken)
         {
-            var courses = await _unitOfWork.Courses.GetAllAsync();
+            var result = await _unitOfWork.Courses.GetPagedCoursesAsync(
+                request.Pagination.PageNumber,
+                request.Pagination.PageSize,
+                request.Pagination.SearchTerm
+            );
 
-            return courses.Select(c => new CourseDto
-            {
-                Id = c.Id,
-                Title = c.Title,
-                Description = c.Description,
-            }).ToList();
+            return _mapper.Map<IReadOnlyList<CourseDto>>(result);
         }
     }
 }

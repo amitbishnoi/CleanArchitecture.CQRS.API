@@ -1,6 +1,7 @@
 ﻿using Application.Features.Authentication.Interfaces;
 using Application.Interfaces;
 using Application.Interfaces.SecurityInterface;
+using Application.Mappings;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;

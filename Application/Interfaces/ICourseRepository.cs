@@ -6,5 +6,6 @@ namespace Application.Interfaces
     {
         Task<IReadOnlyList<Course>> GetCoursesWithUsersAsync();
         Task<Course?> GetByTitleAsync(string title);
+        Task<IReadOnlyList<Course>> GetPagedCoursesAsync(int pageNumber, int pageSize, string? searchTerm);
     }
 }
