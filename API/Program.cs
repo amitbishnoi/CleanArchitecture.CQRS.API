@@ -1,14 +1,32 @@
-using Application.Features.Authentication.Interfaces;
+﻿using Application.Features.Authentication.Interfaces;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Application;
-using Infrastructure.Services;
 using Infrastructure.Settings;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+// 🔹 Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File(
+        path: Path.Combine(AppContext.BaseDirectory, "Logs", "log-.txt"),
+        rollingInterval: RollingInterval.Day,
+        retainedFileCountLimit: 7,
+        fileSizeLimitBytes: 10_000_000,
+        rollOnFileSizeLimit: true
+    )
+    .CreateLogger();
+
+builder.Host.UseSerilog();
 
 // DB
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -42,7 +60,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
         };
     });
-
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdminOrManager", policy =>
@@ -56,6 +73,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
 // Configure middleware pipeline
 if (app.Environment.IsDevelopment())
 {
@@ -64,8 +82,22 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<API.Middleware.ExceptionMiddleware>();
+app.UseSerilogRequestLogging(); // log all HTTP requests
 app.UseHttpsRedirection();
 app.UseAuthentication();  // ? important before authorization
 app.UseAuthorization();   // ? important order
 app.MapControllers();
-app.Run();
+
+try
+{
+    Log.Information("🚀 Application Starting...");
+    app.Run();
+}
+catch (Exception ex)
+{
+    Log.Fatal(ex, "❌ Application startup failed!");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
