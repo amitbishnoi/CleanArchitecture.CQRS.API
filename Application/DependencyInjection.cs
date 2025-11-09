@@ -13,6 +13,7 @@ namespace Application
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddMemoryCache();
             return services;
         }
     }
