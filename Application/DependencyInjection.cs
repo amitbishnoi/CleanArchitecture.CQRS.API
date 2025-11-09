@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Mappings;
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -10,6 +11,7 @@ namespace Application
         {
             // Fix: Use AddMediatR(Assembly assembly) overload
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             return services;
         }
