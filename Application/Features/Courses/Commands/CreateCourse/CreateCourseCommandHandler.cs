@@ -4,15 +4,8 @@ using MediatR;
 
 namespace Application.Features.Courses.Commands.CreateCourse
 {
-    public class CreateCourseCommandHandler : IRequestHandler<CreateCourseCommand, int>
+    public class CreateCourseCommandHandler(IUnitOfWork _unitOfWork) : IRequestHandler<CreateCourseCommand, int>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public CreateCourseCommandHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<int> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
         {
             var entity = new Course

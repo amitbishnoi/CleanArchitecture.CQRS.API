@@ -1,4 +1,5 @@
-﻿using Application.Features.Courses.Queries.GetAllCourses;
+﻿using Application.Features.Courses.Dtos;
+using Application.Features.Courses.Queries.GetAllCourses;
 using MediatR;
 
 namespace Application.Features.Courses.Queries.GetCourseById

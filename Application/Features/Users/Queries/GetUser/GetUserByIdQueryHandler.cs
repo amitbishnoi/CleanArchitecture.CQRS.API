@@ -9,15 +9,8 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Users.Queries.GetUser
 {
-    public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIDQuery, UserDto?>
+    public class GetUserByIdQueryHandler(IUnitOfWork _unitOfWork) : IRequestHandler<GetUserByIDQuery, UserDto?>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public GetUserByIdQueryHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<UserDto?> Handle(GetUserByIDQuery request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.Users.GetUserWithCoursesAsync(request.Id);

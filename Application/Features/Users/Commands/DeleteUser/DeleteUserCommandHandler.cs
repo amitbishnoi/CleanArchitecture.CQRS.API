@@ -8,15 +8,8 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Users.Commands.DeleteUser
 {
-    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, bool>
+    public class DeleteUserCommandHandler(IUnitOfWork _unitOfWork) : IRequestHandler<DeleteUserCommand, bool>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public DeleteUserCommandHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<bool> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.Users.GetByIdAsync(request.Id);

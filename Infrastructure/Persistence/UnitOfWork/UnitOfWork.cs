@@ -14,15 +14,18 @@ namespace Infrastructure.Persistence.UnitOfWork
 
         public IUserRepository Users { get; }
         public ICourseRepository Courses { get; }
+        public IEnrollmentRepository Enrollment { get; }
 
         public UnitOfWork(
             ApplicationDbContext context,
             IUserRepository userRepository,
-            ICourseRepository courseRepository)
+            ICourseRepository courseRepository,
+            IEnrollmentRepository enrollment)
         {
             _context = context;
             Users = userRepository;
             Courses = courseRepository;
+            Enrollment = enrollment;
         }
 
         public async Task<int> SaveAsync()
