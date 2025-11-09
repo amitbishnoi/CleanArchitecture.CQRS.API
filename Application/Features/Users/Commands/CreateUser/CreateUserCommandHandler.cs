@@ -5,17 +5,8 @@ using MediatR;
 
 namespace Application.Features.Users.Commands.CreateUser
 {
-    public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, int>
+    public class CreateUserCommandHandler(IUnitOfWork _unitOfWork,IPasswordHasher _passwordHasher) : IRequestHandler<CreateUserCommand, int>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IPasswordHasher _passwordHasher;
-
-        public CreateUserCommandHandler(IUnitOfWork unitOfWork, IPasswordHasher passwordHasher)
-        {
-            _unitOfWork = unitOfWork;
-            _passwordHasher = passwordHasher;
-        }
-
         public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var hashedPassword = _passwordHasher.HashPassword(request.Password);

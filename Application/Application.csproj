@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Behaviors\" />
-    <Folder Include="Features\Courses\Dtos\" />
   </ItemGroup>
 
   <PropertyGroup>

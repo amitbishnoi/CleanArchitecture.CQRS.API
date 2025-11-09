@@ -4,15 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Courses.Commands.DeleteCourse
 {
-    public class DeleteCourseCommandHandler : IRequestHandler<DeleteCourseCommand, Unit>
+    public class DeleteCourseCommandHandler(IUnitOfWork _unitOfWork) : IRequestHandler<DeleteCourseCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public DeleteCourseCommandHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<Unit> Handle(DeleteCourseCommand request, CancellationToken cancellationToken)
         {
             var entity = await _unitOfWork.Courses.GetByIdAsync(request.Id);    

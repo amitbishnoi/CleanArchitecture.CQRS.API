@@ -15,8 +15,9 @@ namespace Infrastructure.Persistence
         // Define your DbSets (tables)
         public DbSet<User> Users { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
 
-        // Optional: For auditing fields like CreatedDate, ModifiedDate
+        // Auto-update audit fields
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker
@@ -37,33 +38,78 @@ namespace Infrastructure.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
-            // Apply entity configurations if any
+            // --- Users Table ---
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("Users");
                 entity.HasKey(u => u.Id);
 
                 entity.Property(u => u.Name)
-                      .IsRequired()
-                      .HasMaxLength(100);
+                    .HasMaxLength(100)
+                    .IsRequired();
 
                 entity.Property(u => u.Email)
-                      .IsRequired()
-                      .HasMaxLength(200);
+                    .HasMaxLength(200)
+                    .IsRequired();
 
+                entity.Property(u => u.PasswordHash)
+                    .HasMaxLength(255)
+                    .HasDefaultValue(string.Empty);
+
+                entity.Property(u => u.Role)
+                    .HasMaxLength(50)
+                    .HasDefaultValue("User");
             });
 
+            // --- Courses Table ---
             modelBuilder.Entity<Course>(entity =>
             {
                 entity.ToTable("Courses");
                 entity.HasKey(c => c.Id);
 
                 entity.Property(c => c.Title)
-                      .IsRequired()
-                      .HasMaxLength(150);
+                    .HasMaxLength(150)
+                    .IsRequired();
 
                 entity.Property(c => c.Description)
-                      .HasMaxLength(500);
+                    .HasMaxLength(500);
+
+                entity.Property(c => c.CreatedAt)
+                    .HasDefaultValueSql("SYSUTCDATETIME()");
+
+                entity.Property(c => c.UpdatedAt)
+                    .HasDefaultValueSql("SYSUTCDATETIME()");
+
+                entity.HasOne(c => c.Instructor)
+                    .WithMany(u => u.CreatedCourses)
+                    .HasForeignKey(c => c.InstructorId)
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .HasConstraintName("FK_Courses_Users_InstructorId");
+            });
+
+            // --- Enrollments Table ---
+            modelBuilder.Entity<Enrollment>(entity =>
+            {
+                entity.ToTable("Enrollments");
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.CreatedAt)
+                    .HasDefaultValueSql("SYSUTCDATETIME()");
+
+                entity.Property(e => e.UpdatedAt)
+                    .HasDefaultValueSql("SYSUTCDATETIME()");
+
+                entity.HasOne(e => e.User)
+                    .WithMany(u => u.Enrollments)
+                    .HasForeignKey(e => e.UserId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Enrollments_Users_UserId");
+
+                entity.HasOne(e => e.Course)
+                    .WithMany(c => c.Enrollments)
+                    .HasForeignKey(e => e.CourseId)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .HasConstraintName("FK_Enrollments_Courses_CourseId");
             });
         }
     }

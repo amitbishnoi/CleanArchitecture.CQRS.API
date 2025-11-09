@@ -4,15 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Courses.Commands.UpdateCourse
 {
-    public class UpdateCourseCommandHandler : IRequestHandler<UpdateCourseCommand, Unit>
+    public class UpdateCourseCommandHandler(IUnitOfWork _unitOfWork) : IRequestHandler<UpdateCourseCommand, Unit>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public UpdateCourseCommandHandler(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
         public async Task<Unit> Handle(UpdateCourseCommand request, CancellationToken cancellationToken)
         {
             var entity = await _unitOfWork.Courses.GetByIdAsync(request.Id);
