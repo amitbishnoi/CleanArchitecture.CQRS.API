@@ -14,6 +14,7 @@ namespace Application
             services.AddAutoMapper(cfg => cfg.AddProfile<MappingProfile>());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             services.AddMemoryCache();
+
             return services;
         }
     }

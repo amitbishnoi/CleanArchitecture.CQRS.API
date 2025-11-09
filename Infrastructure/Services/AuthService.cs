@@ -2,9 +2,10 @@
 using Application.Features.Authentication.Interfaces;
 using Application.Interfaces;
 using Application.Interfaces.SecurityInterface;
+using Infrastructure.Settings;
 using Microsoft.Extensions.Options;
 
-namespace Infrastructure.Security
+namespace Infrastructure.Services
 {
     public class AuthService : IAuthService
     {

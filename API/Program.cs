@@ -1,11 +1,12 @@
 using Application.Features.Authentication.Interfaces;
 using Infrastructure.Persistence;
-using Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Application;
+using Infrastructure.Services;
+using Infrastructure.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +21,8 @@ builder.Services.AddApplicationServices();
 // ? Bind JwtSettings to IOptions<JwtSettings>
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
-// ? Register AuthService properly
-builder.Services.AddScoped<IAuthService, AuthService>();
+// ? Bind EmailSettings to IOptions<EmailSettings>
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 // JWT Authentication & Authorization
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

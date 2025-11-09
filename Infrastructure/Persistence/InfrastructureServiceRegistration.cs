@@ -3,7 +3,7 @@ using Application.Interfaces;
 using Application.Interfaces.SecurityInterface;
 using Application.Mappings;
 using Infrastructure.Persistence.Repositories;
-using Infrastructure.Security;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,6 +32,8 @@ namespace Infrastructure.Persistence
             services.AddScoped<ICourseRepository, CourseRepository>();
             services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork.UnitOfWork>();
+            services.AddScoped<ICacheService, CacheService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }

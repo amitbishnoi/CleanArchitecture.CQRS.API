@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Features.Users.Commands.CreateUser
 {
-    public class CreateUserCommandHandler(IUnitOfWork _unitOfWork,IPasswordHasher _passwordHasher) : IRequestHandler<CreateUserCommand, int>
+    public class CreateUserCommandHandler(IUnitOfWork _unitOfWork,IPasswordHasher _passwordHasher, IEmailService _emailService) : IRequestHandler<CreateUserCommand, int>
     {
         public async Task<int> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -21,6 +21,12 @@ namespace Application.Features.Users.Commands.CreateUser
 
             await _unitOfWork.Users.AddAsync(user);
             await _unitOfWork.SaveAsync();
+
+            await _emailService.SendEmailAsync(
+                user.Email,
+                "Welcome to RemoteLMS 🎉",
+                $"<h3>Hello {user.Name},</h3><p>Welcome aboard! Your account has been created successfully in my new LMS.</p>"
+            );
 
             return user.Id;
         }

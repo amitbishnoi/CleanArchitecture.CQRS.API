@@ -14,8 +14,15 @@ namespace Infrastructure.Services
 
         public T Get<T>(string key)
         {
-            _cache.TryGetValue(key, out T value);
-            return value;
+            if (_cache.TryGetValue(key, out T? value) && value is not null)
+            {
+                return value;
+            }
+            else
+            {
+                // Return default value for T if not found or null
+                return default!;
+            }
         }
 
         public void Set<T>(string key, T value, TimeSpan duration)
@@ -31,3 +38,4 @@ namespace Infrastructure.Services
             _cache.Remove(key);
         }
     }
+}
