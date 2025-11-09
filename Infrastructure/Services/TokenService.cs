@@ -1,5 +1,6 @@
 ﻿using Application.Interfaces.SecurityInterface;
 using Domain.Entities;
+using Infrastructure.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Infrastructure.Security
+namespace Infrastructure.Services
 {
     public class TokenService : ITokenService
     {

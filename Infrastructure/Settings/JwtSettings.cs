@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Security
+﻿namespace Infrastructure.Settings
 {
     public class JwtSettings
     {
