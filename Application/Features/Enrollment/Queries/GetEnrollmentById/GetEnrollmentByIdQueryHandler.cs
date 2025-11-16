@@ -11,7 +11,7 @@ namespace Application.Features.Enrollment.Queries.GetEnrollmentById
             var enrollment = await _unitOfWork.Enrollment.GetByIdWithDetailsAsync(request.Id);
             if (enrollment == null)
             {
-                throw new KeyNotFoundException($"Enrollment not found with id : {request.Id}");
+                return null;
             }
             var enrollmentDto = new EnrollmentDto
             {

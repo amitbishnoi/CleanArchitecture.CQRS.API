@@ -8,7 +8,10 @@ namespace Application.Features.Enrollment.Queries.GetAllEnrollment
     {
         public async Task<List<EnrollmentDto>> Handle(GetAllEnrollmentQuery request, CancellationToken cancellationToken)
         {
-            var enrollments = await _unitOfWork.Enrollment.GetAllWithDetailsAsync();
+            var enrollments = await _unitOfWork.Enrollment.GetPagedEnrollmentsAsync(
+                request.Pagination.PageNumber,
+                request.Pagination.PageSize
+            );
             var enrollmentDtos = enrollments.Select(enrollment => new EnrollmentDto
             {
                 Id = enrollment.Id,

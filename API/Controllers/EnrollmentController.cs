@@ -2,6 +2,7 @@
 using Application.Features.Enrollment.Commands.CreateEnrollment;
 using Application.Features.Enrollment.Commands.UpdateEnrollment;
 using Application.Features.Enrollment.Commands.DeleteEnrollment;
+using Application.Common.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,13 +22,34 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPagedEnrollments([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            var query = new GetAllEnrollmentQuery
+            {
+                Pagination = new Application.Common.Models.PaginationParams
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize
+                }
+            };
+
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEnrollmentById(int id)
         {
             var query = new GetEnrollmentByIdQuery(id);
             var enrollment = await _mediator.Send(query);
             if (enrollment == null)
-                return NotFound(new { Message = $"Enrollment with ID {id} not found." });
+                return NotFound(ApiResponse<object>.Fail(
+                    $"Enrollment with ID {id} not found.",
+                    statusCode: 404,
+                    errorCode: 2001,
+                    error: null
+                ));
 
             return Ok(enrollment);
         }

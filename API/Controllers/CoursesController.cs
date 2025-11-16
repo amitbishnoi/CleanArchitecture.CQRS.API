@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.Common.Responses;
 using Application.Features.Courses.Commands.CreateCourse;
 using Application.Features.Courses.Commands.DeleteCourse;
 using Application.Features.Courses.Commands.UpdateCourse;
@@ -51,11 +52,16 @@ namespace API.Controllers
         public async Task<IActionResult> GetCourseById(int id)
         {
             var query = new GetCourseByIdQuery(id);
-            var user = await _mediator.Send(query);
-            if (user == null)
-                return NotFound(new { Message = $"User with ID {id} not found." });
+            var course = await _mediator.Send(query);
+            if (course == null)
+                return NotFound(ApiResponse<object>.Fail(
+                    $"Course with ID {id} not found.",
+                    statusCode: 404,
+                    errorCode: 2001,
+                    error: null
+                ));
 
-            return Ok(user);
+            return Ok(course);
         }
 
 

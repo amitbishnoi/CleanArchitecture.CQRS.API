@@ -1,4 +1,6 @@
-﻿using Application.Features.Users.Commands.CreateUser;
+﻿using Application.Common.Results;
+using Application.Common.Responses;
+using Application.Features.Users.Commands.CreateUser;
 using Application.Features.Users.Commands.DeleteUser;
 using Application.Features.Users.Commands.UpdateUser;
 using Application.Features.Users.Queries.GetAllUsers;
@@ -28,13 +30,35 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPagedUsers([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] string? searchTerm = null)
+        {
+            var query = new GetAllUsersQuery
+            {
+                Pagination = new Application.Common.Models.PaginationParams
+                {
+                    PageNumber = pageNumber,
+                    PageSize = pageSize,
+                    SearchTerm = searchTerm
+                }
+            };
+
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
             var query = new GetUserByIDQuery(id);
             var user = await _mediator.Send(query);
             if (user == null)
-                return NotFound(new { Message = $"User with ID {id} not found." });
+                return NotFound(ApiResponse<object>.Fail(
+                    $"User with ID {id} not found.",
+                    statusCode: 404,
+                    errorCode: 2001,
+                    error: null
+                ));
 
             return Ok(user);
         }
@@ -43,8 +67,34 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
         {
-            var userId = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetUserById), new { id = userId }, new { Id = userId });
+            var result = await _mediator.Send(command);
+            
+            // Handle Result<int> response
+            if (result is Result<int> createResult)
+            {
+                if (createResult.IsSuccess)
+                {
+                    var userId = createResult.Data;
+                    var response = ApiResponse<int>.Ok(
+                        userId, 
+                        message: "User created successfully", 
+                        statusCode: 201
+                    );
+                    return CreatedAtAction(nameof(GetUserById), new { id = userId }, response);
+                }
+                else
+                {
+                    var response = ApiResponse<int>.Fail(
+                        createResult.ErrorMessage ?? "Failed to create user",
+                        statusCode: 400,
+                        errorCode: createResult.ErrorCode
+                    );
+                    return BadRequest(response);
+                }
+            }
+
+            // Fallback for wrapped ApiResponse<Result<int>>
+            return Ok(result);
         }
 
         [HttpPut("{id}")]
