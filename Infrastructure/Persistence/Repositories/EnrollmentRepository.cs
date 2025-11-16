@@ -28,5 +28,17 @@ namespace Infrastructure.Persistence.Repositories
                 .Include(e => e.Course)
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
+
+        public async Task<IReadOnlyList<Enrollment>> GetPagedEnrollmentsAsync(int pageNumber, int pageSize)
+        {
+            return await _context.Enrollments
+                .Include(e => e.User)
+                .Include(e => e.Course)
+                .OrderBy(x => x.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

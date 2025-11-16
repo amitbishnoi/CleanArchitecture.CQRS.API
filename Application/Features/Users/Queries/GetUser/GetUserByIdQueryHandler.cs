@@ -23,7 +23,6 @@ namespace Application.Features.Users.Queries.GetUser
                 Id = user.Id,
                 Name = user.Name,
                 Email = user.Email,
-                Password = user.PasswordHash,
                 Role = user.Role,
             };
         }

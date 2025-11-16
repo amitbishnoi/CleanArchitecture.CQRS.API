@@ -13,6 +13,8 @@ namespace Application.Features.Courses.Commands.CreateCourse
             RuleFor(x => x.Description)
                 .NotEmpty().WithMessage("Description is required.");
 
+            RuleFor(x => x.InstructorId)
+                .GreaterThan(0).WithMessage("InstructorId must be a valid positive number.");
         }
     }
 }

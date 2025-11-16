@@ -6,5 +6,6 @@ namespace Application.Interfaces
     {
         Task<User?> GetUserWithCoursesAsync(int userId);
         Task<bool> IsEmailTakenAsync(string email);
+        Task<IReadOnlyList<User>> GetPagedUsersAsync(int pageNumber, int pageSize, string? searchTerm);
     }
 }

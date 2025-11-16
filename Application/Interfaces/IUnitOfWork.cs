@@ -1,4 +1,6 @@
-﻿namespace Application.Interfaces
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace Application.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
@@ -6,5 +8,8 @@
         ICourseRepository Courses { get; }
         IEnrollmentRepository Enrollment { get; }
         Task<int> SaveAsync();
+        Task<IDbContextTransaction> BeginTransactionAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
     }
 }
