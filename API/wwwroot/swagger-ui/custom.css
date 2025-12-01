@@ -1,0 +1,302 @@
+/* Custom Swagger UI Styles */
+
+/* Header styling */
+.swagger-ui .topbar {
+    background-color: #2c3e50;
+    padding: 10px 0;
+}
+
+.swagger-ui .topbar .download-url-wrapper {
+    display: none;
+}
+
+/* Info section styling */
+.swagger-ui .info {
+    margin: 30px 0;
+}
+
+.swagger-ui .info .title {
+    font-size: 2.5em;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.swagger-ui .info .description {
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+/* Operation styling */
+.swagger-ui .opblock {
+    border-radius: 8px;
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.swagger-ui .opblock .opblock-summary {
+    border-radius: 8px 8px 0 0;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary {
+    background: rgba(97, 175, 254, 0.1);
+    border-color: #61affe;
+}
+
+.swagger-ui .opblock.opblock-post .opblock-summary {
+    background: rgba(73, 204, 144, 0.1);
+    border-color: #49cc90;
+}
+
+.swagger-ui .opblock.opblock-put .opblock-summary {
+    background: rgba(252, 161, 48, 0.1);
+    border-color: #fca130;
+}
+
+.swagger-ui .opblock.opblock-delete .opblock-summary {
+    background: rgba(249, 62, 62, 0.1);
+    border-color: #f93e3e;
+}
+
+/* Response styling */
+.swagger-ui .responses-inner {
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 0 0 8px 8px;
+}
+
+/* Try it out button */
+.swagger-ui .btn.try-out__btn {
+    background: #4990e2;
+    color: white;
+    border-radius: 4px;
+    padding: 8px 20px;
+    font-weight: bold;
+}
+
+.swagger-ui .btn.try-out__btn:hover {
+    background: #357abd;
+}
+
+/* Execute button */
+.swagger-ui .btn.execute {
+    background: #49cc90;
+    color: white;
+    border-radius: 4px;
+    padding: 10px 30px;
+    font-weight: bold;
+}
+
+.swagger-ui .btn.execute:hover {
+    background: #3aa073;
+}
+
+/* Authorize button */
+.swagger-ui .btn.authorize {
+    background: #f93e3e;
+    color: white;
+    border-color: #f93e3e;
+    border-radius: 4px;
+    padding: 8px 20px;
+    font-weight: bold;
+}
+
+.swagger-ui .btn.authorize:hover {
+    background: #d32f2f;
+    border-color: #d32f2f;
+}
+
+.swagger-ui .btn.authorize svg {
+    fill: white;
+}
+
+/* Model styling */
+.swagger-ui .model-box {
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.swagger-ui .model {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}
+
+/* Schema styling */
+.swagger-ui .model-toggle {
+    font-size: 0.9em;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+/* Parameter table */
+.swagger-ui table thead tr td,
+.swagger-ui table thead tr th {
+    font-weight: bold;
+    padding: 12px;
+    background: #f5f5f5;
+}
+
+.swagger-ui .parameter__name {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.swagger-ui .parameter__type {
+    color: #4990e2;
+    font-weight: 600;
+}
+
+/* Response code styling */
+.swagger-ui .response-col_status {
+    font-weight: bold;
+}
+
+.swagger-ui .response-col_status.response-200 {
+    color: #49cc90;
+}
+
+.swagger-ui .response-col_status.response-201 {
+    color: #49cc90;
+}
+
+.swagger-ui .response-col_status.response-400 {
+    color: #fca130;
+}
+
+.swagger-ui .response-col_status.response-401 {
+    color: #f93e3e;
+}
+
+.swagger-ui .response-col_status.response-404 {
+    color: #f93e3e;
+}
+
+.swagger-ui .response-col_status.response-500 {
+    color: #d32f2f;
+}
+
+/* Filter input */
+.swagger-ui .filter-container input {
+    border-radius: 4px;
+    padding: 8px 12px;
+    border: 2px solid #e1e1e1;
+}
+
+.swagger-ui .filter-container input:focus {
+    border-color: #4990e2;
+    outline: none;
+}
+
+/* Version selector */
+.swagger-ui select {
+    border-radius: 4px;
+    padding: 8px 12px;
+    border: 2px solid #e1e1e1;
+    background: white;
+}
+
+/* Authentication modal */
+.swagger-ui .dialog-ux .modal-ux {
+    border-radius: 8px;
+}
+
+.swagger-ui .dialog-ux .modal-ux-header {
+    background: #2c3e50;
+    color: white;
+    padding: 15px;
+    border-radius: 8px 8px 0 0;
+}
+
+/* Scrollbar styling */
+.swagger-ui ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.swagger-ui ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.swagger-ui ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.swagger-ui ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Loading animation */
+.swagger-ui .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+/* Highlight important information */
+.swagger-ui .info .description strong {
+    color: #2c3e50;
+}
+
+.swagger-ui .info .description ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.swagger-ui .info .description ul li {
+    padding: 5px 0;
+}
+
+/* Links styling */
+.swagger-ui .info a,
+.swagger-ui .info .description a {
+    color: #4990e2;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.swagger-ui .info a:hover,
+.swagger-ui .info .description a:hover {
+    color: #357abd;
+    text-decoration: underline;
+}
+
+/* Improve readability */
+.swagger-ui .opblock-description-wrapper p,
+.swagger-ui .opblock-external-docs-wrapper p,
+.swagger-ui .opblock-title_normal p {
+    font-size: 0.95em;
+    line-height: 1.5;
+    color: #555;
+}
+
+/* Tags */
+.swagger-ui .opblock-tag {
+    font-size: 1.3em;
+    margin: 20px 0 10px 0;
+    color: #2c3e50;
+    border-bottom: 2px solid #e1e1e1;
+    padding-bottom: 10px;
+}
+
+/* Deprecation warning */
+.swagger-ui .opblock.opblock-deprecated {
+    opacity: 0.6;
+    border-color: #fca130;
+}
+
+.swagger-ui .opblock-deprecated .opblock-summary {
+    background: rgba(252, 161, 48, 0.1);
+}
+
+/* Success message */
+.swagger-ui .response.success {
+    background: rgba(73, 204, 144, 0.1);
+    border-color: #49cc90;
+}
+
+/* Custom branding */
+.swagger-ui .topbar-wrapper img[alt="Swagger UI"] {
+    content: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHJ4PSI4IiBmaWxsPSIjNDk5MGUyIi8+PHRleHQgeD0iMjAiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QVBJPHRleHQvPjwvc3ZnPg==');
+}
