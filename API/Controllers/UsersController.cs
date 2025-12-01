@@ -5,15 +5,22 @@ using Application.Features.Users.Commands.DeleteUser;
 using Application.Features.Users.Commands.UpdateUser;
 using Application.Features.Users.Queries.GetAllUsers;
 using Application.Features.Users.Queries.GetUser;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    /// <summary>
+    /// User management endpoints for CRUD operations
+    /// </summary>
     [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [Route("api/[controller]")] // Fallback for backward compatibility
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -23,6 +30,12 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
+        /// <summary>
+        /// Get all users in the system
+        /// </summary>
+        /// <returns>List of all users</returns>
+        /// <response code="200">Returns the list of users</response>
+        /// <response code="401">Unauthorized - JWT token required</response>
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

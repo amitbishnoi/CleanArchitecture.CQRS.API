@@ -1,14 +1,15 @@
 # RemoteLMS CQRS API - Complete Implementation Guide
 
-A production-ready **Clean Architecture ASP.NET Core 8 API** implementing **CQRS (Command Query Responsibility Segregation)** with comprehensive response handling, error management, and testing.
+A production-ready **Clean Architecture ASP.NET Core 9 API** implementing **CQRS (Command Query Responsibility Segregation)** with comprehensive response handling, error management, testing, and **API Versioning**.
 
-**Status:** ✅ Production Ready | 🧪 47 Tests | ✅ Zero Errors
+**Status:** ✅ Production Ready | 🧪 47 Tests | ✅ Zero Errors | 🔄 API Versioning (v1, v2)
 
 ---
 
 ## 📋 Quick Navigation
 
 - [Architecture](#architecture)
+- [API Versioning](#api-versioning) ⭐ **NEW**
 - [Response Contract](#response-contract)
 - [Result<T> Pattern](#resultt-pattern)
 - [API Response Examples](#api-response-examples)
@@ -52,9 +53,81 @@ A production-ready **Clean Architecture ASP.NET Core 8 API** implementing **CQRS
 - **CQRS:** Command Query Responsibility Segregation with MediatR
 - **Result<T>:** Functional result pattern for error handling
 - **ApiResponse<T>:** Standardized response wrapper
+- **API Versioning:** URL, Header, and Query String versioning support ⭐ **NEW**
 - **Middleware:** Centralized exception handling
 - **Repository:** Data access abstraction
 - **Unit of Work:** Transaction management
+
+---
+
+## 🔄 API Versioning
+
+### Overview
+
+The API supports **multiple versioning strategies** with v1.0 and v2.0 available:
+
+#### Versioning Methods
+1. **URL Segment** (Recommended): `/api/v1/users`, `/api/v2/apiinfo`
+2. **Query String**: `/api/users?api-version=1.0`
+3. **HTTP Header**: `X-Api-Version: 2.0`
+
+#### Available Versions
+
+| Version | Status | Features |
+|---------|--------|----------|
+| **v1.0** | Stable | All core CRUD operations, basic API info |
+| **v2.0** | Current | Enhanced features, detailed metrics, system info |
+
+### New Endpoints
+
+#### API Information & Health
+```http
+GET /api/v1/apiinfo          # Basic API information
+GET /api/v2/apiinfo          # Enhanced API information with architecture details
+GET /api/v1/apiinfo/health   # Simple health check
+GET /api/v2/apiinfo/health   # Detailed health check with system metrics
+GET /api/v2/apiinfo/metrics  # API usage metrics (V2 only)
+```
+
+### Example: V2 Enhanced Response
+```json
+{
+  "success": true,
+  "data": {
+    "name": "RemoteLMS Clean Architecture CQRS API",
+    "version": "2.0",
+    "architecture": {
+      "pattern": "Clean Architecture + CQRS",
+      "layers": ["Domain", "Application", "Infrastructure", "API"]
+    },
+    "performance": {
+      "averageResponseTime": "< 100ms",
+      "cacheEnabled": true
+    },
+    "modules": [
+      {
+        "name": "Users",
+        "baseUrl": "/api/v2/users",
+        "endpointCount": 6
+      }
+    ]
+  }
+}
+```
+
+### Testing Versions
+```powershell
+# V1 API Info
+Invoke-RestMethod -Uri "https://localhost:5001/api/v1/apiinfo"
+
+# V2 Enhanced Info
+Invoke-RestMethod -Uri "https://localhost:5001/api/v2/apiinfo"
+
+# V2 Metrics (exclusive to v2)
+Invoke-RestMethod -Uri "https://localhost:5001/api/v2/apiinfo/metrics"
+```
+
+📖 **Full Documentation**: See [API_VERSIONING_GUIDE.md](API_VERSIONING_GUIDE.md) and [API_VERSIONING_QUICKSTART.md](API_VERSIONING_QUICKSTART.md)
 
 ---
 
